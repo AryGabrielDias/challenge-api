@@ -1,9 +1,10 @@
 package com.telefonica.challengeapi.service;
 
 import java.awt.image.BufferedImage;
+import java.util.List;
 
 public interface BitmapMatrixService {
 
-    String getHowManyTimeArrayElementsAppearsInMatrix(BufferedImage image);
+    List<String> getHowManyTimeArrayElementsAppearsInMatrix(BufferedImage image);
 
 }

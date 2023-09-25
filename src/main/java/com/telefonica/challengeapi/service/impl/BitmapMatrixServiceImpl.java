@@ -1,12 +1,43 @@
 package com.telefonica.challengeapi.service.impl;
 
+import com.telefonica.challengeapi.service.BitmapMatrixService;
 import org.springframework.stereotype.Service;
 
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
-public class BitmapMatrixServiceImpl {
+public class BitmapMatrixServiceImpl implements BitmapMatrixService {
 
+    @Override
+    public List<String> getHowManyTimeArrayElementsAppearsInMatrix(BufferedImage image) {
+
+        var elementsFound = new ArrayList<String>();
+
+        int array[] = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15};
+
+        int matrix[][] = bitmapToMatrix(image);
+
+        for(int i = 0; i < array.length; i++) {
+
+            var times = 0;
+
+            for (int c = 0; c < matrix.length; c++) {
+
+                for (int d = 0; d < matrix[0].length; d++) {
+
+                    if (array[i] == matrix[c][d]) {
+                        times++;
+                    }
+                }
+            }
+
+            elementsFound.add("Element: " + array[i] + " Found " + times + " times");
+        }
+
+        return elementsFound;
+    }
 
     private static int[][] bitmapToMatrix(BufferedImage image) {
         int iw = image.getWidth();
@@ -33,5 +64,4 @@ public class BitmapMatrixServiceImpl {
         }
         return ret;
     }
-
 }
