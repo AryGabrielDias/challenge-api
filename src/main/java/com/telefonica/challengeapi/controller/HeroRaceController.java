@@ -35,6 +35,7 @@ public class HeroRaceController {
     @ApiResponse(responseCode = "200", description = "OK",
             content = @Content(schema = @Schema(implementation = RaceResultDTO.class)))
     public ResponseEntity<RaceResultDTO> getHeroRace() throws FileNotFoundException {
+        LOGGER.info("HeroRaceController - getHeroRace()");
         return new ResponseEntity<>(heroRaceService.getRaceResult(), HttpStatus.OK);
     }
 }

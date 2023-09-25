@@ -2,11 +2,14 @@ package com.telefonica.challengeapi.service.impl;
 
 import com.telefonica.challengeapi.dto.*;
 import com.telefonica.challengeapi.service.HeroRaceService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.nio.charset.StandardCharsets;
+import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -14,8 +17,12 @@ import java.util.*;
 @Service
 public class HeroRaceServiceImpl implements HeroRaceService {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(HeroRaceServiceImpl.class);
+
     @Override
     public RaceResultDTO getRaceResult() throws FileNotFoundException {
+
+        LOGGER.info("HeroRaceServiceImpl - getRaceResult()");
 
         var raceData = this.readTextFileAndGetRaceData();
 
@@ -40,6 +47,8 @@ public class HeroRaceServiceImpl implements HeroRaceService {
     }
 
     private List<RacePositionDTO> getRacePositions(List<RaceDataDTO> raceData) {
+
+        LOGGER.info("HeroRaceServiceImpl - getRacePositions()");
 
         var racePositionList = new ArrayList<RacePositionDTO>();
 
@@ -68,8 +77,7 @@ public class HeroRaceServiceImpl implements HeroRaceService {
             racePosition.setPosition(i + 1);
             racePosition.setSuperHero(hero.getSuperHero());
             racePosition.setBestLap(this.getHeroBestLap(hero.getSuperHero(), raceData));
-            racePosition.setAverageRaceSpeed(
-                    this.getHeroAverageRaceSpeed(hero.getSuperHero(), raceData));
+            racePosition.setAverageRaceSpeed(this.getHeroAverageRaceSpeed(hero.getSuperHero(), raceData));
 
             racePositionList.add(racePosition);
 
@@ -83,6 +91,8 @@ public class HeroRaceServiceImpl implements HeroRaceService {
     }
 
     private String getRaceWinner(List<RaceDataDTO> raceData) {
+
+        LOGGER.info("HeroRaceServiceImpl - getRaceWinner()");
 
         var lastLapList = new ArrayList<RacerDTO>();
 
@@ -105,6 +115,8 @@ public class HeroRaceServiceImpl implements HeroRaceService {
     }
 
     private String getHeroBestLap(String racer, List<RaceDataDTO> raceData) {
+
+        LOGGER.info("HeroRaceServiceImpl - getHeroBestLap()");
 
         var heroLapList = new ArrayList<BestRaceLapDTO>();
 
@@ -130,6 +142,8 @@ public class HeroRaceServiceImpl implements HeroRaceService {
 
     private Double getHeroAverageRaceSpeed(String racer, List<RaceDataDTO> raceData) {
 
+        LOGGER.info("HeroRaceServiceImpl - getHeroAverageRaceSpeed()");
+
         var averageSpeed = 0.0;
 
         for (RaceDataDTO dataDTO : raceData) {
@@ -144,6 +158,8 @@ public class HeroRaceServiceImpl implements HeroRaceService {
     }
 
     private String getRaceBestLap(List<RaceDataDTO> raceData) {
+
+        LOGGER.info("HeroRaceServiceImpl - getRaceBestLap()");
 
         var raceLapList = new ArrayList<BestRaceLapDTO>();
 
@@ -163,18 +179,23 @@ public class HeroRaceServiceImpl implements HeroRaceService {
     }
 
     private LocalDateTime convertStringHourToLocalDateTime(String hour) {
+        LOGGER.info("HeroRaceServiceImpl - convertStringHourToLocalDateTime()");
         var dateHour = "2023-09-23 ".concat(hour);
         var formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
         return LocalDateTime.parse(dateHour, formatter);
     }
 
     private LocalDateTime convertStringMinuteToLocalDateTime(String minute) {
+        LOGGER.info("HeroRaceServiceImpl - convertStringMinuteToLocalDateTime()");
         var dateHour = "2023-09-23 00:0".concat(minute);
         var formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
         return LocalDateTime.parse(dateHour, formatter);
     }
 
     private List<RaceDataDTO> readTextFileAndGetRaceData() throws FileNotFoundException {
+
+        LOGGER.info("HeroRaceServiceImpl - readTextFileAndGetRaceData()");
+
 
         var inputFile = new FileInputStream("C:\\KDI\\Cognizant\\heroRaceList.txt");
         var readFile = new Scanner(inputFile, StandardCharsets.UTF_8);

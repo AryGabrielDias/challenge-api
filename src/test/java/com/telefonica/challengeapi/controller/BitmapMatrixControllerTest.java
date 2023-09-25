@@ -7,16 +7,17 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import javax.imageio.ImageIO;
 import java.io.File;
+import java.io.FileInputStream;
 import java.util.ArrayList;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(controllers = BitmapMatrixController.class)
@@ -33,18 +34,20 @@ public class BitmapMatrixControllerTest {
                 new BitmapMatrixController(bitmapMatrixService)).build();
     }
 
-    @Disabled
     @Test
     public void should_returnHeroRaceResultDTO_when_getVectorInsideBitmapMatrixFromImageIsCalled() throws Exception {
 
-        var bufferedImage = ImageIO.read(new File("C:\\KDI\\Cognizant\\image.jpeg"));
+        var file = new File("C:\\KDI\\Cognizant\\image.jpeg");
+        var input = new FileInputStream(file);
+
+        var image = new MockMultipartFile("image", input);
 
         when(bitmapMatrixService.getHowManyTimeArrayElementsAppearsInMatrix(any()))
                 .thenReturn(new ArrayList<>());
 
-        mockMvc.perform(post("/v0/api/loan")
-                        .contentType(MediaType.MULTIPART_FORM_DATA_VALUE)
-                        .requestAttr("image", bufferedImage))
+        mockMvc.perform(MockMvcRequestBuilders.multipart("/v0/challenge/api/bitmap")
+                        .file(image)
+                        .contentType(MediaType.MULTIPART_FORM_DATA_VALUE))
                 .andExpect(status().isOk());
     }
 }

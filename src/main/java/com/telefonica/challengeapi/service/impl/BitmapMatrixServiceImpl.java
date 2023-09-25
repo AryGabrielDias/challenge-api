@@ -1,6 +1,8 @@
 package com.telefonica.challengeapi.service.impl;
 
 import com.telefonica.challengeapi.service.BitmapMatrixService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.awt.image.BufferedImage;
@@ -10,8 +12,12 @@ import java.util.List;
 @Service
 public class BitmapMatrixServiceImpl implements BitmapMatrixService {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(BitmapMatrixServiceImpl.class);
+
     @Override
     public List<String> getHowManyTimeArrayElementsAppearsInMatrix(BufferedImage image) {
+
+        LOGGER.info("BitmapMatrixServiceImpl - getHowManyTimeArrayElementsAppearsInMatrix()");
 
         var elementsFound = new ArrayList<String>();
 
@@ -40,6 +46,9 @@ public class BitmapMatrixServiceImpl implements BitmapMatrixService {
     }
 
     private static int[][] bitmapToMatrix(BufferedImage image) {
+
+        LOGGER.info("BitmapMatrixServiceImpl - bitmapToMatrix()");
+
         int iw = image.getWidth();
         int ih = image.getHeight();
         int[][] ret = new int[ih][iw];
